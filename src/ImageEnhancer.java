@@ -44,6 +44,8 @@ public class ImageEnhancer extends Component implements ActionListener {
     private static JMenu fileMenu, editMenu, imageMenu;
     public static JMenuItem exitItem, undoItem, redoItem, darkenItem,
      blurItem, sharpenItem, photoNegItem, thresholdItem;
+    private BufferedImageStack Undo = new BufferedImageStack(); 
+    private BufferedImageStack Redo = new BufferedImageStack(); 
 
     //  Students: Here, you should declare two variables to hold instances
     	//of your stack class, with one for Undo and one for Redo.
