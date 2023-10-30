@@ -49,4 +49,35 @@ public class BufferedImageStack
 		return arr.length;
 	}
 	
+	public void push(BufferedImage someB)
+	{
+		if(size == arr.length)
+		{
+			BufferedImage[] arr2 = new BufferedImage[size * 2];
+			for(int i = 0; i < arr.length; i ++)
+			{
+				arr2[i] = arr[i]; 
+			}
+			arr2[size] = someB; 
+			arr = arr2;
+			size ++; 
+			
+
+		}
+		else
+		{
+			arr[size] = someB;
+			size ++; 
+
+		}
+	}
+	
+	public boolean isEmpty()
+	{
+		if(size == 0)
+		{
+			return true; 
+		}
+		return false; 
+	}
 }
