@@ -12,6 +12,7 @@ public class BufferedImageStack
 	
 	public BufferedImageStack()
 	{
-		
+		size = 0;
+		arr = new BufferedImage[2];
 	}
 }
