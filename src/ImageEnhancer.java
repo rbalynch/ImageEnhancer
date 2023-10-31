@@ -44,8 +44,8 @@ public class ImageEnhancer extends Component implements ActionListener {
     private static JMenu fileMenu, editMenu, imageMenu;
     public static JMenuItem exitItem, undoItem, redoItem, darkenItem,
      blurItem, sharpenItem, photoNegItem, thresholdItem;
-    private BufferedImageStack Undo = new BufferedImageStack(); 
-    private BufferedImageStack Redo = new BufferedImageStack(); 
+    private BufferedImageStack Undo;
+    private BufferedImageStack Redo;
 
     //  Students: Here, you should declare two variables to hold instances
     	//of your stack class, with one for Undo and one for Redo.
@@ -154,6 +154,8 @@ public class ImageEnhancer extends Component implements ActionListener {
         
         //  Students: Add code to create empty stack instances for the Undo stack 
         	//and the Redo stack, and put your code for this here:
+        Undo = new BufferedImageStack(); 
+        Redo = new BufferedImageStack(); 
         
     }
 
@@ -185,17 +187,53 @@ public class ImageEnhancer extends Component implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         //  Students: Add code in this method to save the current buffered image for
         	//undoing and dispose of any redoable actions.
+    	if (e.getSource() != undoItem)
+    	{
+    		
+    		Undo.push(copyImage(biWorking));
+    		if (e.getSource() != redoItem)
+    		{
+    			redoItem.setEnabled(false);
+           	 	while (Redo.getSize() != 0)
+           	 	{
+           	 		Redo.pop();
+           	 	}
+    		}
+    	}
+        undoItem.setEnabled(true);
         
         //  Also add code to enable and disable the Undo and Redo menu items, and to process
         //  these items when the user selects them.
 
-     //System.out.println("The actionEvent is "+e); // This can be useful when debugging.
+     System.out.println("The actionEvent is "+e); // This can be useful when debugging.
      if (e.getSource()==exitItem) { System.exit(0); }
      if (e.getSource()==blurItem) { blur(); }
      if (e.getSource()==sharpenItem) { sharpen(); }
      if (e.getSource()==darkenItem) { darken(); }
      if (e.getSource()==photoNegItem) { photoneg(); }
      if (e.getSource()==thresholdItem) { threshold(); }
+     if (e.getSource()==undoItem) {
+    	 System.out.println("GOOD");
+
+    	 Redo.push(copyImage(biWorking));
+    	 biWorking = Undo.pop();
+    	 redoItem.setEnabled(true);
+    	 
+    	 if (Undo.isEmpty())
+    	 {
+    		 undoItem.setEnabled(false);
+    	 }
+
+     }
+     if (e.getSource()==redoItem)
+     {
+    	 undoItem.setEnabled(true);
+    	 biWorking = Redo.pop();
+    	 if (Redo.isEmpty())
+    	 {
+    		 redoItem.setEnabled(false);
+    	 }
+     }
         gWorking.drawImage(biFiltered, 0, 0, null); // Draw the pixels from biFiltered into biWorking.
         repaint(); // Ask Swing to update the screen.
         printNumbersOfElementsInBothStacks(); // Report on the states of the stacks.
@@ -233,8 +271,8 @@ public class ImageEnhancer extends Component implements ActionListener {
      //  Students: Uncomment this code that prints out the numbers of elements
      	// in each of the two stacks (Undo and Redo):
         
-        //System.out.println("The Undo stack contains " + undoStack.getSize() + " elements.");
-        //System.out.println("The Redo stack contains " + redoStack.getSize() + " elements.");
+        System.out.println("The Undo stack contains " + Undo.getSize() + " elements.");
+        System.out.println("The Redo stack contains " + Redo.getSize() + " elements.");
     }
     
     //To make sure we are actually assigning the values of our BufferedImages instead of

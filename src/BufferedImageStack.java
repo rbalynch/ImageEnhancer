@@ -24,9 +24,12 @@ public class BufferedImageStack
 			throw new EmptyStackException();
 		}
 		BufferedImage temp = arr[size - 1];
+		System.out.println(size);
 		size--;
-		arr[size - 1] = null;
+		arr[size] = null;
+		System.out.println(size);
 		return temp;
+		
 		
 	}
 	
