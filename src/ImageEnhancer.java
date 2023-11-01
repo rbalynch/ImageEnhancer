@@ -213,22 +213,24 @@ public class ImageEnhancer extends Component implements ActionListener {
      if (e.getSource()==photoNegItem) { photoneg(); }
      if (e.getSource()==thresholdItem) { threshold(); }
      if (e.getSource()==undoItem) {
-    	 System.out.println("GOOD");
 
-    	 Redo.push(copyImage(biWorking));
-    	 biWorking = Undo.pop();
-    	 redoItem.setEnabled(true);
+    	 Redo.push(copyImage(biWorking));//we want to save the current image so that we can redo to it later. We only can redo if there was an undo before the redo 
+    	 biWorking = Undo.pop();//we are moving one image back
+    	 redoItem.setEnabled(true);//now that we have gone back on, it is possible to redo into the item we just overrided
     	 
-    	 if (Undo.isEmpty())
+    	 if (Undo.isEmpty())//since we are popping from undo, we dont wnat to call this method with an empty stack 
     	 {
     		 undoItem.setEnabled(false);
     	 }
 
      }
      if (e.getSource()==redoItem)
-     {
-    	 undoItem.setEnabled(true);
-    	 biWorking = Redo.pop();
+     {	
+    	 
+    	 //do this tomorrow. if I undo twice then redo twice, the next undo will be incorrect 
+    	 
+    	 undoItem.setEnabled(true);//since we are redoing, there is at least one item before that we can undo to
+    	 biWorking = Redo.pop();//
     	 if (Redo.isEmpty())
     	 {
     		 redoItem.setEnabled(false);
